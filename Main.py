@@ -30,9 +30,8 @@ def Battle(Name,EHP,EMHP,EDMG):
   earn = 0
   Tdmg = DMG + Wepbook[Wep]
   invalid = 0
-  Win = 0
-  yeet = True
-  while yeet:
+  win = 0
+  while True:
     print(f"Your HP: {HP}/{MHP}")
     print(f"{Name}'s HP: {EHP}/{EMHP}")
     print(f"Weapon: {Wep}")
@@ -43,8 +42,9 @@ def Battle(Name,EHP,EMHP,EDMG):
     if inp == "1": 
       invalid = 0
       defense = 0 
+      f = EHP
       EHP -= random.randint(DMG-2,DMG+2)
-      input(f"You attack the {Name}")
+      input(f"You attack the {Name} dealing {f-EHP} damage!")
       if EHP < 1:
         input(f"You beat the {Name}!")
         win = 1
@@ -57,14 +57,15 @@ def Battle(Name,EHP,EMHP,EDMG):
       invalid = 1
 
     if invalid == 0:
-      input(f"The {Name} attacks you!")
-      dmg = EDMG - defense
+      dmg = EDMG - defense + random.randint(-2,1)
+      input(f"The {Name} attacks you dealing {dmg} damage!")
+      
       if dmg  >= 1:
         HP = HP - dmg
       else:
         print(f"The {Name} completely misses.")
 
-    if HP >= 0:
+    if HP <= 0:
       break
   os.system("clear")
   if win == 1:
@@ -74,15 +75,17 @@ def Battle(Name,EHP,EMHP,EDMG):
     input("You win!")
     input(f"You earned {CE} Coins")
     input(f"You earned {XE} XP")
+    input(f"You now have {Coins} coins")
     if XP > NXP:
       XP -= NXP
       Lvl += 1
       print(f"You leveled up to level {Lvl}!")
+    input(f"You have {XP}/{NXP} and your level {Lvl}!")
     input("Press enter")
     return None
   else:
     print("You lost some of your coins")
-    Coins -= randint(5,EDMG/2)
+    Coins -= random.randint(2,EDMG)
     if Coins <= 0:
       Coins = 0
     print(f"You have {Coins} coins")
