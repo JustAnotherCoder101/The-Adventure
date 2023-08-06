@@ -24,7 +24,6 @@ def Lvlcheck():
   global HP
   global MHP
   MHP = LvlbookH[Lvl]
-  HP = MHP
   DMG = LvlbookD[Lvl]
 def Battle(Name,EHP,EMHP,EDMG):
   Lvlcheck()
@@ -64,13 +63,21 @@ def Battle(Name,EHP,EMHP,EDMG):
       invalid = 0
       input("You brace Yourself")
       defense = random.randint(DEF - 1,DEF + 2)
+      
     else: 
       invalid = 1
 
     if invalid == 0:
       dmg = EDMG - defense + random.randint(-2,1)
       input(f"The {Name} attacks you dealing {dmg} damage!")
-      
+      if defense >= 1:
+        input(f"The {Name} gets hurt dealing {defense} damage to itself")
+        EHP -= defense
+        if EHP < 1:
+          input(f"You beat the {Name}!")
+          win = 1
+          break
+        
       if dmg  >= 1:
         HP = HP - dmg
       else:
@@ -139,9 +146,12 @@ input("half way to the village you come across a evil mushroom that looks like i
 input("You prepare for battle thinking the Old man wasn't so crazy after all.")
 os.system("clear") 
 
+
+
 while True:
   if Battle("Mushroom",15,15,5) == None:
     break
-    
-print("You arrive at the village.")
+
+os.system("clear")
+input("You arrive at the village.")
 
