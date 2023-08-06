@@ -10,7 +10,7 @@ NXP = 10
 DMG = 5
 DEF = 2
 Wep = "WoodSword"
-Wepbook = {"WoodSword":3}
+Wepbook = {"WoodSword":3,"StoneSword":7}
 LvlbookH = {1:40,2:45,3:50,4:60,5:70}
 LvlbookD = {1:5,2:6,3:8,4:10}
 
@@ -153,5 +153,14 @@ while True:
     break
 
 os.system("clear")
-input("You arrive at the village.")
-
+input("You: *arrives home*")
+input("that was weird, you say to yourself")
+input("was that strange man right after all? ")
+input("You decide to go to the blacksmith\n")
+os.system('clear')
+print("Blacksmith: An old guy")
+input("left this stone sword for you.")
+input("You: Oh thanks! \n")
+input("New weapon: StoneSword")
+Wep = "StoneSword"
+input(f"new damage:{DMG + Wepbook[Wep]}")
