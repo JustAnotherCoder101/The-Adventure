@@ -9,10 +9,12 @@ XP = 0
 NXP = 10
 DMG = 5
 DEF = 2
+INV = ["HealthPotionLvl1","HealthPotionLvl1","HealthPotionLvl1"]
 Wep = "WoodSword"
 Wepbook = {"WoodSword":3,"StoneSword":7}
 LvlbookH = {1:40,2:45,3:50,4:60,5:70}
 LvlbookD = {1:5,2:6,3:8,4:10}
+INVbook = {"HealthPotionLvl1":"H20"}
 
 Name = input("What is Your name?\n ")
 os.system("clear")
@@ -25,6 +27,20 @@ def Lvlcheck():
   global MHP
   MHP = LvlbookH[Lvl]
   DMG = LvlbookD[Lvl]
+  
+def Use(org,str):
+  global HP
+  global MHP
+  global INVbook
+  original = HP
+  if str.startswith("H"):
+    str = str.replace("H","")
+    HP += int(str)
+    if HP > MHP:
+      HP = MHP 
+    print(f"You used the {org} and healed {HP-original} health!")
+    print(f"You have {HP}/{MHP} HP")
+
 def Battle(Name,EHP,EMHP,EDMG):
   Lvlcheck()
   global NXP
@@ -37,15 +53,19 @@ def Battle(Name,EHP,EMHP,EDMG):
   global Wep
   global Wepbook
   global DEF
+  global INV
+  global INVbook
+  defense = 0
   earn = 0
-  Tdmg = DMG + Wepbook[Wep]
   invalid = 0
   win = 0
+  f_INV = ""
+
   while True:
     print(f"Your HP: {HP}/{MHP}")
     print(f"{Name}'s HP: {EHP}/{EMHP}")
     print(f"Weapon: {Wep}")
-    print("Options: 1 = Attack 2 = Defend")
+    print("Options: 1 = Attack 2 = Defend 3 = Inventory")
     inp = input("What do you do?: ").strip()
     os.system("clear")
     
@@ -63,7 +83,24 @@ def Battle(Name,EHP,EMHP,EDMG):
       invalid = 0
       input("You brace Yourself")
       defense = random.randint(DEF - 1,DEF + 2)
-      
+
+    elif inp == "3":
+      pass
+      if len(INV) == 0:
+        invalid = 1
+        input("Your inventory is empty")
+
+      else:
+        print("Options:")
+        if INV.count("HealthPotionLvl1") != 0:
+          f_INV = INV.count("HealthPotionLvl1")
+          print(f"1. HealthPotionLvl1({f_INV})")
+          
+        if input("What item do you use?(select the number)") == "1":
+          INV.remove("HealthPotionLvl1")
+          Use("HealthPotionLvl1",INVbook["HealthPotionLvl1"])
+          
+        
     else: 
       invalid = 1
 
@@ -112,12 +149,12 @@ def Battle(Name,EHP,EMHP,EDMG):
     print(f"You have {Coins} coins")
     input("Press enter")
     return 1
-    
+
 #Code
 input('''
 -----AIM-----
 Travel the land upgrading yourself along the way.
-You will have to fight fierce and terrifing monsters leading up the to the Darklord good luck and don't die.
+You will have to fight fierce and terrifing monsters leading up the to the final boss. Good luck and don't die.
 
 -----HOW TO PLAY-----
 HP = health
@@ -164,3 +201,17 @@ input("You: Oh thanks! \n")
 input("New weapon: StoneSword")
 Wep = "StoneSword"
 input(f"new damage:{DMG + Wepbook[Wep]}")
+input("You decide to head back home and rest until morning")
+os.system("clear")
+input("You wake up in some strange place that's covered in thick fog")
+input("You see a shadowy figure in the distance, you call out to it")
+input("You: Hello?")
+input("???: ...")
+input("before you can ask again he dashes towards you")
+os.system("clear")
+input("you open your eyes sweating")
+input("It was just a bad dream, you say in relief")
+input("press enter to leave the house")
+os.system("clear")
+#Home Town
+
