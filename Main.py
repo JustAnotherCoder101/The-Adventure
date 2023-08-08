@@ -14,6 +14,7 @@ Wep = "WoodSword"
 Wepbook = {"WoodSword":3,"StoneSword":7}
 LvlbookH = {1:40,2:45,3:50,4:60,5:70}
 LvlbookD = {1:5,2:6,3:8,4:10}
+LvlbookX = {1:10,2:15,3:20,4:30,5:40}
 INVbook = {"HealthPotionLvl1":"H20"}
 
 Name = input("What is Your name?\n ")
@@ -25,6 +26,8 @@ def Lvlcheck():
   global DMG
   global HP
   global MHP
+  global NXP
+  NXP = LvlbookX[Lvl]
   MHP = LvlbookH[Lvl]
   DMG = LvlbookD[Lvl]
   
@@ -99,6 +102,10 @@ def Battle(Name,EHP,EMHP,EDMG):
         if input("What item do you use?(select the number)") == "1":
           INV.remove("HealthPotionLvl1")
           Use("HealthPotionLvl1",INVbook["HealthPotionLvl1"])
+        else:
+          invalid = 1 
+          input("That does not exist")
+          os.system("clear")
           
         
     else: 
@@ -136,9 +143,9 @@ def Battle(Name,EHP,EMHP,EDMG):
     if XP > NXP:
       XP -= NXP
       Lvl += 1
-      print(f"You leveled up to level {Lvl}!")
+      print("You leveled up!")
       Lvlcheck()
-    input(f"You have {XP}/{NXP} and you're level {Lvl}!")
+    input(f"You have {XP}/{NXP} XP and you're level {Lvl}!")
     input("Press enter")
     return None
   else:
@@ -181,7 +188,7 @@ input("press enter to walk into town ")
 os.system("clear")
 input("half way to the village you come across a evil mushroom that looks like it wants to hurt you")
 input("You prepare for battle thinking the Old man wasn't so crazy after all.")
-input("At least you brung some healing potions")
+input("At least you took some healing potions")
 os.system("clear") 
 
 
