@@ -16,6 +16,7 @@ LvlbookH = {1:40,2:45,3:50,4:60,5:70}
 LvlbookD = {1:5,2:6,3:8,4:10}
 LvlbookX = {1:10,2:15,3:20,4:30,5:40}
 INVbook = {"HealthPotionLvl1":"H20"}
+Gems = 0
 
 Name = input("What is Your name?\n ")
 os.system("clear")
@@ -65,6 +66,8 @@ def Battle(Name,EHP,EMHP,EDMG):
   f_INV = ""
 
   while True:
+    thing = []
+    id = []
     print(f"Your HP: {HP}/{MHP}")
     print(f"{Name}'s HP: {EHP}/{EMHP}")
     print(f"Weapon: {Wep}")
@@ -96,12 +99,20 @@ def Battle(Name,EHP,EMHP,EDMG):
       else:
         print("Options:")
         if INV.count("HealthPotionLvl1") != 0:
+          id.append("HealthPotionLvl1")
           f_INV = INV.count("HealthPotionLvl1")
-          print(f"1. HealthPotionLvl1({f_INV})")
+          print(f"{len(id)}. HealthPotionLvl1({f_INV})")
           
-        if input("What item do you use?(select the number)") == "1":
-          INV.remove("HealthPotionLvl1")
-          Use("HealthPotionLvl1",INVbook["HealthPotionLvl1"])
+        use = input("What item do you use?(select the number)")
+        if use.isnumeric() == False or use.strip() == "":
+          invalid = 1
+        use = int(use)-1
+        for i in range(len(id)):
+          thing.append(i)
+        input(thing)
+        if use in thing: 
+          INV.remove(id[use])
+          Use(id[use],INVbook[id[use]])
         else:
           invalid = 1 
           input("That does not exist")
@@ -113,6 +124,8 @@ def Battle(Name,EHP,EMHP,EDMG):
 
     if invalid == 0:
       dmg = EDMG - defense + random.randint(-2,1)
+      if dmg >= 1:
+        dmg = 0
       input(f"The {Name} attacks you dealing {dmg} damage!")
       if defense >= 1:
         input(f"The {Name} gets hurt dealing {defense} damage to itself")
@@ -157,6 +170,8 @@ def Battle(Name,EHP,EMHP,EDMG):
     input("Press enter")
     return 1
 
+def Mine():
+  pass
 #Code
 input('''
 -----AIM-----
