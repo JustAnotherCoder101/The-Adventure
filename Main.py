@@ -7,8 +7,8 @@ Coins = 10
 Lvl = 1
 XP = 0
 NXP = 10
-DMG = 5
-DEF = 2
+DMG = 6
+DEF = 3
 INV = ["HealthPotionLvl1","HealthPotionLvl1","HealthPotionLvl1"]
 Wep = "WoodSword"
 Wepbook = {"WoodSword":3,"StoneSword":7}
@@ -17,6 +17,7 @@ LvlbookD = {1:5,2:6,3:8,4:10}
 LvlbookX = {1:10,2:15,3:20,4:30,5:40}
 INVbook = {"HealthPotionLvl1":"H20"}
 Gems = 0
+forrestname = ["Mushroom","Wolf","Evil Sapling","Giant Spider"]
 
 Name = input("What is Your name?\n ")
 os.system("clear")
@@ -104,13 +105,16 @@ def Battle(Name,EHP,EMHP,EDMG):
           print(f"{len(id)}. HealthPotionLvl1({f_INV})")
           
         use = input("What item do you use?(select the number)")
-        if use.isnumeric() == False or use.strip() == "":
+        if use.isnumeric() != False or use.strip() != "":
+          use = int(use)-1
+          
+        else:
           invalid = 1
-        use = int(use)-1
         for i in range(len(id)):
           thing.append(i)
-        input(thing)
-        if use in thing: 
+        
+        if use in thing:
+          os.system("clear")
           INV.remove(id[use])
           Use(id[use],INVbook[id[use]])
         else:
@@ -124,7 +128,7 @@ def Battle(Name,EHP,EMHP,EDMG):
 
     if invalid == 0:
       dmg = EDMG - defense + random.randint(-2,1)
-      if dmg >= 1:
+      if dmg <= 0:
         dmg = 0
       input(f"The {Name} attacks you dealing {dmg} damage!")
       if defense >= 1:
@@ -144,7 +148,7 @@ def Battle(Name,EHP,EMHP,EDMG):
       break
   os.system("clear")
   if win == 1:
-    earn = (EMHP + EDMG) / 2
+    earn = int((EMHP + EDMG) / 2)
     XE = random.randint(earn-1,earn+2) + 2
     CE = random.randint(earn-1,earn+2)
     Coins += CE
@@ -170,8 +174,31 @@ def Battle(Name,EHP,EMHP,EDMG):
     input("Press enter")
     return 1
 
-def Mine():
-  pass
+def Forrest(l): 
+  global forrestname
+  yeet = True
+  aH = l*7 + 2
+  aH = random.randint(aH-2,aH+2)
+  aD = int(aH/3)
+  if l == 1:
+    n = "your"
+  else:
+    n = "the"
+  input(f"You enter {n} forrest")
+  while yeet:
+    aH = random.randint(aH-2,aH+2)
+    aD = int(aH/3)
+    H = random.randint(aH-2,aH+2)
+    D = random.randint(aD-2,aD+2)
+    input("You encounter a creature!")
+    Battle(forrestname[random.randint(1,len(forrestname)-1)],H,H,D)
+    if input("do you continue?(y/n)").upper().strip() != "Y":
+      input(f"You leave {n} forrest")
+      yeet = False
+      
+  
+  
+  
 #Code
 input('''
 -----AIM-----
@@ -209,7 +236,7 @@ os.system("clear")
 
 
 while True:
-  if Battle("Mushroom",15,15,5) == None:
+  if Battle("Mushroom",15,15,6) == None:
     break
 
 os.system("clear")
@@ -223,11 +250,11 @@ input("left this stone sword for you.")
 input("You: Oh thanks! \n")
 input("New weapon: StoneSword")
 Wep = "StoneSword"
-input(f"new damage:{DMG + Wepbook[Wep]}")
+input(f"new damage: {DMG + Wepbook[Wep]}")
 input("You decide to head back home and rest until morning")
 os.system("clear")
 input("You wake up in some strange place that's covered in thick fog")
-input("You see a strange shadowy figure in the distance, and you call out to it")
+input("You see a strange figure with glowing eyes in the distance, and you call out to it")
 input("You: Hello?")
 input("???: ...")
 input("before you can ask again he dashes towards you")
@@ -235,6 +262,9 @@ os.system("clear")
 input("you open your eyes sweating")
 input("It was just a bad dream, you say in relief")
 input("press enter to leave the house")
+HP = MHP
 os.system("clear")
-#Home Town
-
+#Forrest
+input("You decide to train in the forrest")
+Forrest(1)
+HP=MHP
