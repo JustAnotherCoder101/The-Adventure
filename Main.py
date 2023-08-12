@@ -7,17 +7,18 @@ Coins = 10
 Lvl = 1
 XP = 0
 NXP = 10
-DMG = 6
-DEF = 3
+DMG = 3
+DEF = 4
 INV = ["HealthPotionLvl1","HealthPotionLvl1","HealthPotionLvl1"]
 Wep = "WoodSword"
 Wepbook = {"WoodSword":3,"StoneSword":7}
 LvlbookH = {1:40,2:45,3:50,4:60,5:70}
-LvlbookD = {1:5,2:6,3:8,4:10}
-LvlbookX = {1:10,2:15,3:20,4:30,5:40}
+LvlbookD = {1:3,2:4,3:5,4:6}
+LvlbookX = {1:15,2:20,3:25,4:30,5:40}
 INVbook = {"HealthPotionLvl1":"H20"}
 Gems = 0
 forrestname = ["Mushroom","Wolf","Evil Sapling","Giant Spider"]
+lootlvl1 = ["HealthPotionLvl1"]
 
 Name = input("What is Your name?\n ")
 os.system("clear")
@@ -60,6 +61,7 @@ def Battle(Name,EHP,EMHP,EDMG):
   global DEF
   global INV
   global INVbook
+  global lootlvl1
   defense = 0
   earn = 0
   invalid = 0
@@ -69,7 +71,8 @@ def Battle(Name,EHP,EMHP,EDMG):
   while True:
     thing = []
     id = []
-    print(f"Your HP: {HP}/{MHP}")
+    
+    print(f"\nYour HP: {HP}/{MHP}")
     print(f"{Name}'s HP: {EHP}/{EMHP}")
     print(f"Weapon: {Wep}")
     print("Options: 1 = Attack 2 = Defend 3 = Inventory")
@@ -80,7 +83,7 @@ def Battle(Name,EHP,EMHP,EDMG):
       invalid = 0
       defense = 0 
       f = EHP
-      EHP -= random.randint(DMG-2,DMG+2)
+      EHP -= random.randint(DMG+Wepbook[Wep],DMG+2+Wepbook[Wep])
       input(f"You attack the {Name} dealing {f-EHP} damage!")
       if EHP < 1:
         input(f"You beat the {Name}!")
@@ -148,6 +151,11 @@ def Battle(Name,EHP,EMHP,EDMG):
       break
   os.system("clear")
   if win == 1:
+    loot = None
+    if random.randint(1,4) == 4:
+      loot = lootlvl1[random.randint(0,len(lootlvl1)-1)]
+
+    
     earn = int((EMHP + EDMG) / 2)
     XE = random.randint(earn-1,earn+2) + 2
     CE = random.randint(earn-1,earn+2)
@@ -156,6 +164,10 @@ def Battle(Name,EHP,EMHP,EDMG):
     input("You win!")
     input(f"You earned {CE} Coins")
     input(f"You earned {XE} XP")
+    if loot != None:
+      input(f"The {Name} dropped an item!")
+      input(f"+1 {loot}")
+      INV.append({loot})
     input(f"You now have {Coins} coins")
     if XP > NXP:
       XP -= NXP
@@ -177,8 +189,8 @@ def Battle(Name,EHP,EMHP,EDMG):
 def Forrest(l): 
   global forrestname
   yeet = True
-  aH = l*7 + 2
-  aH = random.randint(aH-2,aH+2)
+  aH = l*7 +8
+  aH = random.randint(aH-3,aH+3)
   aD = int(aH/3)
   if l == 1:
     n = "your"
@@ -188,11 +200,12 @@ def Forrest(l):
   while yeet:
     aH = random.randint(aH-2,aH+2)
     aD = int(aH/3)
-    H = random.randint(aH-2,aH+2)
-    D = random.randint(aD-2,aD+2)
+    H = random.randint(aH-1,aH+5)
+    D = random.randint(aD-1,aD+3)
     input("You encounter a creature!")
+    os.system("clear")
     Battle(forrestname[random.randint(1,len(forrestname)-1)],H,H,D)
-    if input("do you continue?(y/n)").upper().strip() != "Y":
+    if input("do you continue?(n for leave)").upper().strip() == "N":
       input(f"You leave {n} forrest")
       yeet = False
       
@@ -267,4 +280,4 @@ os.system("clear")
 #Forrest
 input("You decide to train in the forrest")
 Forrest(1)
-HP=MHP
+HP = MHP
