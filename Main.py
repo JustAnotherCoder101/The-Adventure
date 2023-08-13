@@ -12,13 +12,12 @@ DEF = 4
 INV = ["HealthPotionLvl1","HealthPotionLvl1","HealthPotionLvl1"]
 Wep = "WoodSword"
 Wepbook = {"WoodSword":3,"StoneSword":7}
-LvlbookH = {1:40,2:45,3:50,4:60,5:70}
-LvlbookD = {1:3,2:4,3:5,4:6}
-LvlbookX = {1:15,2:20,3:25,4:30,5:40}
-INVbook = {"HealthPotionLvl1":"H20"}
-Gems = 0
+LvlbookH = {1:40,2:45,3:50,4:60,5:70,6:80}
+LvlbookD = {1:4,2:5,3:6,4:7,5:9,6:10}
+LvlbookX = {1:15,2:20,3:25,4:30,5:40,6:55}
+INVbook = {"HealthPotionLvl1":"H20","MiniBomb":"B30"}
 forrestname = ["Mushroom","Wolf","Evil Sapling","Giant Spider"]
-lootlvl1 = ["HealthPotionLvl1"]
+lootlvl1 = ["HealthPotionLvl1","MiniBomb"]
 
 Name = input("What is Your name?\n ")
 os.system("clear")
@@ -46,6 +45,12 @@ def Use(org,str):
       HP = MHP 
     print(f"You used the {org} and healed {HP-original} health!")
     print(f"You have {HP}/{MHP} HP")
+    return 0
+  elif str.startswith("B"):
+    str = str.replace("B","")
+    dmg = int(str)
+    print(f"You threw the {org} and dealt {dmg} damage!")
+    return dmg
 
 def Battle(Name,EHP,EMHP,EDMG):
   Lvlcheck()
@@ -102,10 +107,17 @@ def Battle(Name,EHP,EMHP,EDMG):
 
       else:
         print("Options:")
+        print("0.Leave")
+        #Health
         if INV.count("HealthPotionLvl1") != 0:
           id.append("HealthPotionLvl1")
           f_INV = INV.count("HealthPotionLvl1")
           print(f"{len(id)}. HealthPotionLvl1({f_INV})")
+        #Bomb
+        if INV.count("MiniBomb") != 0:
+          id.append("MiniBomb")
+          f_INV = INV.count("MiniBomb")
+          print(f"{len(id)}. MiniBomb({f_INV})")
           
         use = input("What item do you use?(select the number)")
         if use.isnumeric() != False or use.strip() != "":
@@ -119,7 +131,14 @@ def Battle(Name,EHP,EMHP,EDMG):
         if use in thing:
           os.system("clear")
           INV.remove(id[use])
-          Use(id[use],INVbook[id[use]])
+          EHP -= Use(id[use],INVbook[id[use]])
+          if EHP < 1:
+            input(f"You beat the {Name}!")
+            win = 1
+          break
+        elif use == 0:
+          input("press enter to go back")
+          invalid = 1
         else:
           invalid = 1 
           input("That does not exist")
@@ -241,8 +260,9 @@ input("Old Man: I'l be off for my travels good luck.")
 input("You laugh it off, 'He's lost his marbles!' you say to yourself")
 input("press enter to walk into town ")
 os.system("clear")
-input("half way to the village you come across a evil mushroom that looks like it wants to hurt you")
-input("You prepare for battle thinking the Old man wasn't so crazy after all.")
+input("half way to the village") 
+input("you come across a evil mushroom that looks like it wants to hurt you")
+input("You prepare for battle thinking the old man wasn't so crazy after all.")
 input("At least you took some healing potions")
 os.system("clear") 
 
