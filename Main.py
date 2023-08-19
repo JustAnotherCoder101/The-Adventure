@@ -1,6 +1,7 @@
 import os
 import random
 
+
 HP =  40
 MHP = 40
 Coins = 10
@@ -8,16 +9,26 @@ Lvl = 1
 XP = 0
 NXP = 10
 DMG = 3
+DMGMod = 0
 DEF = 4
+DEFMod = 0
 INV = ["HealthPotionLvl1","HealthPotionLvl1","HealthPotionLvl1"]
 Wep = "WoodSword"
 Wepbook = {"WoodSword":3,"StoneSword":7}
 LvlbookH = {1:40,2:45,3:50,4:60,5:70,6:80}
 LvlbookD = {1:4,2:5,3:6,4:7,5:9,6:10}
 LvlbookX = {1:15,2:20,3:25,4:30,5:40,6:55}
-INVbook = {"HealthPotionLvl1":"H20","MiniBomb":"B30"}
+INVbook = {"HealthPotionLvl1":"H20","MiniBomb":"B25"}
 forrestname = ["Mushroom","Wolf","Evil Sapling","Giant Spider"]
 lootlvl1 = ["HealthPotionLvl1","MiniBomb"]
+ItemDesc = {
+  "HealthPotionLvl1":": Heals 20 HP",
+  "MiniBomb":": Deals 25 damage"
+}
+ItemCost = {
+  "HealthPotionLvl1":4,
+  "MiniBomb":6
+}
 
 Name = input("What is Your name?\n ")
 os.system("clear")
@@ -40,7 +51,7 @@ def Use(org,str):
   original = HP
   if str.startswith("H"):
     str = str.replace("H","")
-    HP += int(str)
+    HP += int(str) 
     if HP > MHP:
       HP = MHP 
     print(f"You used the {org} and healed {HP-original} health!")
@@ -53,7 +64,6 @@ def Use(org,str):
     return dmg
 
 def Battle(Name,EHP,EMHP,EDMG):
-  Lvlcheck()
   global NXP
   global XP
   global Coins
@@ -171,11 +181,11 @@ def Battle(Name,EHP,EMHP,EDMG):
   os.system("clear")
   if win == 1:
     loot = None
-    if random.randint(1,4) == 4:
+    if random.randint(1,5) == 5:
       loot = lootlvl1[random.randint(0,len(lootlvl1)-1)]
 
     
-    earn = int((EMHP + EDMG) / 2)
+    earn = int((EMHP + EDMG) / 4)
     XE = random.randint(earn-1,earn+2) + 2
     CE = random.randint(earn-1,earn+2)
     Coins += CE
@@ -208,14 +218,11 @@ def Battle(Name,EHP,EMHP,EDMG):
 def Forrest(l): 
   global forrestname
   yeet = True
-  aH = l*7 +8
+  aH = l*7 +9
   aH = random.randint(aH-3,aH+3)
   aD = int(aH/3)
-  if l == 1:
-    n = "your"
-  else:
-    n = "the"
-  input(f"You enter {n} forrest")
+
+  input("You enter the forrest")
   while yeet:
     aH = random.randint(aH-2,aH+2)
     aD = int(aH/3)
@@ -224,13 +231,31 @@ def Forrest(l):
     input("You encounter a creature!")
     os.system("clear")
     Battle(forrestname[random.randint(1,len(forrestname)-1)],H,H,D)
-    if input("do you continue?(n for leave)").upper().strip() == "N":
-      input(f"You leave {n} forrest")
-      yeet = False
+    os.system("clear")
+    yeetb = True
+    while yeetb:
+      stay = input("do you continue?(n to go home and y to stay)").upper().strip()
+      if stay == "N":
+        input("You leave the forrest and go to the black smith")
+        yeetb = False
+        yeet = False
+      elif stay == "Y":
+        input("You stay")
+        os.system("clear")
+        yeetb = False
+        
+      else:  
+        input("Invalid.")
+        os.system("clear")
       
-  
-  
-  
+def Shop():
+  global Coins
+  global INV
+  global INVDesc
+  global INVCost
+
+
+
 #Code
 input('''
 -----AIM-----
