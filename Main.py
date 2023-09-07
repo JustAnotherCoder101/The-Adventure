@@ -1,7 +1,15 @@
 import os
 import random
 
-
+colour = {
+  "W": "\033[0m", 
+  "GRN": "\033[32m", 
+  "P": "\033[35m", 
+  "Y": "\033[33m",
+  "R": "\033[31m",
+  "B":"\033[36m",
+  "GRY":"\033[30m"
+}
 HP =  40
 MHP = 40
 Coins = 10
@@ -18,7 +26,7 @@ Wepbook = {"WoodSword":3,"StoneSword":7}
 LvlbookH = {1:40,2:45,3:50,4:60,5:70,6:80}
 LvlbookD = {1:4,2:5,3:6,4:7,5:9,6:10}
 LvlbookX = {1:15,2:20,3:25,4:30,5:40,6:55}
-INVbook = {"HealthPotionLvl1":"H20","MiniBomb":"B25"}
+INVbook = {"HealthPotionLvl1":"H30","MiniBomb":"B25"}
 forrestname = ["Mushroom","Wolf","Evil Sapling","Giant Spider"]
 lootlvl1 = ["HealthPotionLvl1","MiniBomb"]
 ItemDesc = {
@@ -48,22 +56,27 @@ def Use(org,str):
   global HP
   global MHP
   global INVbook
+  global colour
+  B = colour["B"]
+  W = colour["W"]
+  G = colour["GRN"]
+  R = colour["R"]
   original = HP
   if str.startswith("H"):
     str = str.replace("H","")
     HP += int(str) 
     if HP > MHP:
       HP = MHP 
-    print(f"You used the {org} and healed {HP-original} health!")
-    print(f"You have {HP}/{MHP} HP")
+    print(f"You used the {G}{org}{W} and healed {G}{HP-original}{W} health!")
+    print(f"You have {G}{HP}/{MHP}{W} HP")
     return 0
   elif str.startswith("B"):
     str = str.replace("B","")
     dmg = int(str)
-    print(f"You threw the {org} and dealt {dmg} damage!")
+    print(f"You threw the {B}{org}{W} and dealt {R}{dmg}{W} damage!")
     return dmg
 
-def Battle(Name,EHP,EMHP,EDMG):
+def Battle(Name,EHP,EDMG):
   global NXP
   global XP
   global Coins
@@ -77,6 +90,12 @@ def Battle(Name,EHP,EMHP,EDMG):
   global INV
   global INVbook
   global lootlvl1
+  global colour
+  B = colour["B"]
+  W = colour["W"]
+  G = colour["GRN"]
+  R = colour["R"]
+  EMHP = EHP
   defense = 0
   earn = 0
   invalid = 0
@@ -87,10 +106,10 @@ def Battle(Name,EHP,EMHP,EDMG):
     thing = []
     id = []
     
-    print(f"\nYour HP: {HP}/{MHP}")
-    print(f"{Name}'s HP: {EHP}/{EMHP}")
+    print(f"\nYour HP: {G}{HP}/{MHP}{W}")
+    print(f"{Name}'s HP: {R}{EHP}/{EMHP}{W}")
     print(f"Weapon: {Wep}")
-    print("Options: 1 = Attack 2 = Defend 3 = Inventory")
+    print(f"Options: 1 = Attack 2 = Defend {B}3 = Inventory{W}")
     inp = input("What do you do?: ").strip()
     os.system("clear")
     
@@ -99,7 +118,7 @@ def Battle(Name,EHP,EMHP,EDMG):
       defense = 0 
       f = EHP
       EHP -= random.randint(DMG+Wepbook[Wep],DMG+2+Wepbook[Wep])
-      input(f"You attack the {Name} dealing {f-EHP} damage!")
+      input(f"You attack the {Name} dealing {R}{f-EHP}{W} damage!")
       if EHP < 1:
         input(f"You beat the {Name}!")
         win = 1
@@ -131,7 +150,7 @@ def Battle(Name,EHP,EMHP,EDMG):
           
         use = input("What item do you use?(select the number)")
         if use.isnumeric() != False or use.strip() != "":
-          use = int(use)-1
+          use = int(use) -1
           
         else:
           invalid = 1
@@ -142,10 +161,11 @@ def Battle(Name,EHP,EMHP,EDMG):
           os.system("clear")
           INV.remove(id[use])
           EHP -= Use(id[use],INVbook[id[use]])
+          
           if EHP < 1:
             input(f"You beat the {Name}!")
             win = 1
-          break
+            break
         elif use == 0:
           input("press enter to go back")
           invalid = 1
@@ -162,9 +182,9 @@ def Battle(Name,EHP,EMHP,EDMG):
       dmg = EDMG - defense + random.randint(-2,1)
       if dmg <= 0:
         dmg = 0
-      input(f"The {Name} attacks you dealing {dmg} damage!")
+      input(f"The {Name} attacks you dealing {R}{dmg}{W} damage!")
       if defense >= 1:
-        input(f"The {Name} gets hurt dealing {defense} damage to itself")
+        input(f"The {Name} gets hurt dealing {R}{defense}{W} damage to itself")
         EHP -= defense
         if EHP < 1:
           input(f"You beat the {Name}!")
@@ -191,27 +211,27 @@ def Battle(Name,EHP,EMHP,EDMG):
     Coins += CE
     XP += XE
     input("You win!")
-    input(f"You earned {CE} Coins")
-    input(f"You earned {XE} XP")
+    input(f"You earned {Y}{CE}{W} Coins")
+    input(f"You earned {Y}{XE}{W} XP")
     if loot != None:
       input(f"The {Name} dropped an item!")
-      input(f"+1 {loot}")
+      input(f"+1 {B}{loot}{W}")
       INV.append({loot})
-    input(f"You now have {Coins} coins")
+    input(f"You now have {Y}{Coins}{W} coins")
     if XP > NXP:
       XP -= NXP
       Lvl += 1
       print("You leveled up!")
       Lvlcheck()
-    input(f"You have {XP}/{NXP} XP and you're level {Lvl}!")
+    input(f"You have {Y}{XP}/{NXP}{W} XP and you're {B}level {Lvl}!{W}")
     input("Press enter")
     return None
   else:
-    print("You lost some of your coins")
+    print(f"You lost some of your {Y}coins{B}")
     Coins -= random.randint(2,EDMG)
     if Coins <= 0:
       Coins = 0
-    print(f"You have {Coins} coins")
+    print(f"You have {Y}{Coins}{W} coins")
     input("Press enter")
     return 1
 
@@ -230,13 +250,13 @@ def Forrest(l):
     D = random.randint(aD-1,aD+3)
     input("You encounter a creature!")
     os.system("clear")
-    Battle(forrestname[random.randint(1,len(forrestname)-1)],H,H,D)
+    Battle(forrestname[random.randint(1,len(forrestname)-1)],H,D)
     os.system("clear")
     yeetb = True
     while yeetb:
       stay = input("do you continue?(n to go home and y to stay)").upper().strip()
       if stay == "N":
-        input("You leave the forrest and go to the black smith")
+        input("You leave the forrest and go to the blacksmith")
         yeetb = False
         yeet = False
       elif stay == "Y":
@@ -252,31 +272,40 @@ def Shop():
   global Coins
   global INV
   global INVDesc
-  global INVCost
-
-
-
+  global INVCos
+  
+#Colour Variables
+B = colour["B"]
+W = colour["W"]
+G = colour["GRN"]
+R = colour["R"]
+Y = colour["Y"]
 #Code
-input('''
+
+
+input(f'''
 -----AIM-----
-Travel the land upgrading yourself along the way.
-You will have to fight fierce and terrifing monsters leading up the to the final boss. Good luck and don't die.
+Travel the land {B}upgrading{W} yourself along the way.
+You will have to fight fierce and terrifing {R}monsters{W} leading up the to
+the {R}final boss{W}. Good luck and don't die.
 
 -----HOW TO PLAY-----
-HP = health
-Lvl = your character's Level
-XP = your progress to the next level
+{G}HP = health{W}
+{B}Lvl = your character's Level{W}
+{Y}XP = your progress to the next level{W}
 when given a choice select the given number.
-when fighting a monster, you will earn coins and XP. 
-You can use these coins to buy loot to upgrade yourself.
+when fighting a {R}monster{W}, you will earn {Y}coins{W} and {Y}XP{W}. 
+You can use these {Y}coins{W} to buy {B}loot{W} to {B}upgrade{W} yourself.
 
 That's all for now
 
 
-
 press enter
 ''')
+    
 os.system("clear")
+
+
 input("You walk out of the forest to head back home when a old man comes to talk to you ")
 os.system("clear")
 input("Old Man: You will have to save the land from the darkness. ")
@@ -294,7 +323,7 @@ os.system("clear")
 
 
 while True:
-  if Battle("Mushroom",15,15,6) == None:
+  if Battle("Mushroom",15,6) == None:
     break
 
 os.system("clear")
